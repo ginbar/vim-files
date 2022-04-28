@@ -2,10 +2,8 @@
 " Enable Mouse
 set mouse=a
 
-" Set Editor Font
-if exists(':GuiFont')
-    " Use GuiFont! to ignore font errors
-    GuiFont {font_name}:h{size}
+if exists(":GuiFont")
+    execute "GuiFont! Dejavu Sans Mono:h10"
 endif
 
 " Disable GUI Tabline
