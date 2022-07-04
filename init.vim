@@ -36,27 +36,44 @@ set softtabstop=4
 nnoremap <C-N> :bnext<CR>                     " vim-buftabline tab switch  
 nnoremap <C-P> :bprev<CR>
 command! SQ :NERDTreeClose | :mks! | :xa      " Save everything(session and files) and then exit
-command! BDA :bd <C-a> <ENTER>                        " Delete all buffers 
+command! BDA :bd <C-A> | <ENTER>              " Delete all buffers 
 command! CA :%y+                              " Select and copy all
 
 """""""""""""""""""""""""""Plugins"""""""""""""""""""""""""""
 
 call plug#begin(stdpath('data') . '/plugged')
 
+" Apparence and views
 Plug 'joshdick/onedark.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'preservim/nerdcommenter'
-Plug 'ryanoasis/vim-devicons'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'mhinz/vim-startify'
 Plug 'ap/vim-buftabline'
-Plug 'jlcrochet/vim-razor'
-Plug 'dense-analysis/ale'
+Plug 'mhinz/vim-startify'
+
+" Searching
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+
+" Snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+" Syntax highlight
+Plug 'Shougo/context_filetype.vim'
+
+" Code Analysis
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'dense-analysis/ale'
+Plug 'ryanoasis/vim-devicons'
+
+" C#
 Plug 'OmniSharp/omnisharp-vim'
+Plug 'jlcrochet/vim-razor'
+
+" Javascript
+Plug 'evanleck/vim-svelte'
+Plug 'codechips/coc-svelte', {'do': 'npm install'}
+Plug 'HerringtonDarkholme/yats.vim'
 
 call plug#end()
 
