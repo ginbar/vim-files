@@ -3,7 +3,7 @@
 set mouse=a
 
 if exists(":GuiFont")
-    execute "GuiFont! Dejavu Sans Mono:h10"
+    execute "GuiFont! Dejavu Sans Mono:h9"
 endif
 
 " Disable GUI Tabline
@@ -25,4 +25,3 @@ endif
 nnoremap <silent><RightMouse> :call GuiShowContextMenu()<CR>
 inoremap <silent><RightMouse> <Esc>:call GuiShowContextMenu()<CR>
 vnoremap <silent><RightMouse> :call GuiShowContextMenu()<CR>gv
-
