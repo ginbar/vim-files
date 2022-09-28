@@ -20,7 +20,7 @@ set cursorline               " Highligh cursor
 set nowrap                   " Disable line wrapping
 set autoread                 " Autoreload buffers
 
-set clipboard=unnamedplus    " Use system clipboard
+set clipboard+=unnamedplus   " Use system clipboard
 
 set belloff=all              " Turn off error bells
 set nobackup                 " Disable backup
@@ -30,25 +30,39 @@ set noswapfile               " Disable swapfiles
 set shiftwidth=4             " Make a tab equal to 4 spaces
 set tabstop=4                           
 set softtabstop=4
+set encoding=utf8           " vim-devicons requirement
 
 """""""""""""""""""""Remaps n commands"""""""""""""""""""""""
 
-nnoremap <C-N> :bnext<CR>                     " vim-buftabline tab switch  
-nnoremap <C-P> :bprev<CR>
-command! SQ :NERDTreeClose | :mks! | :xa      " Save everything(session and files) and then exit
-command! BDA :bd <C-A> | <ENTER>              " Delete all buffers 
-command! CA :%y+                              " Select and copy all
+nnoremap <silent> <C-P> <Cmd>BufferPrevious<CR> " barbar tab switch  
+nnoremap <silent> <C-N> <Cmd>BufferNext<CR>
+command! SQ :NERDTreeClose | :mks! | :xa        " Save everything(session and files) and then exit
+command! BDA :bd <C-A> | <ENTER>                " Delete all buffers 
+command! CA :%y+                                " Select and copy all
+command! SCF :!mkdir -p %:h                     " Create and save path/file
+command! RS :so ~/.config/nvim/init.vim         " Reload configuration 
 
 """""""""""""""""""""""""""Plugins"""""""""""""""""""""""""""
+
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+    silent execute sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' 
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
 call plug#begin(stdpath('data') . '/plugged')
 
 " Apparence and views
-Plug 'joshdick/onedark.vim'
+Plug 'ellisonleao/gruvbox.nvim'
 Plug 'scrooloose/nerdtree'
-Plug 'preservim/nerdcommenter'
-Plug 'ap/vim-buftabline'
+Plug 'romgrk/barbar.nvim'
 Plug 'mhinz/vim-startify'
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'nvim-lualine/lualine.nvim'
+
+" Commenting
+Plug 'preservim/nerdcommenter'
 
 " Searching
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -59,12 +73,12 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 " Syntax highlight
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Shougo/context_filetype.vim'
 
 " Code Analysis
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
-Plug 'ryanoasis/vim-devicons'
 
 " C#
 Plug 'OmniSharp/omnisharp-vim'
@@ -80,9 +94,23 @@ call plug#end()
 """""""""""""""""""""""""""Apparence"""""""""""""""""""""""""""
 
 let s:fontsize = 10
-let g:airline_theme='one'
-colorscheme onedark
+colorscheme gruvbox
 set background=dark
+let bufferline = get(g:, 'bufferline', {})
+let bufferline.icon_close_tab = 'x' " Barbar close icon
+let bufferline.icons = 0            " Disable barbar icons
+
+lua << END
+require('gitsigns').setup()
+require('lualine').setup { 
+    options = { 
+        icons_enabled = false, 
+        theme= 'gruvbox',
+        component_separators = '',
+        section_separators = ''
+    } 
+}
+END
 
 """"""""""""""""""""""""""""""ALE""""""""""""""""""""""""""""""
 
@@ -138,4 +166,3 @@ augroup END
 """""""""""""""""""""""""""NERDTree""""""""""""""""""""""""""""
 
 let NERDTreeShowHidden=1        " Display .gitignore, .dockignore, etc.
-
