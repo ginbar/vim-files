@@ -60,6 +60,7 @@ Plug 'romgrk/barbar.nvim'
 Plug 'mhinz/vim-startify'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'nvim-lualine/lualine.nvim'
+Plug 'dstein64/nvim-scrollview', { 'branch': 'main' }
 
 " Commenting
 Plug 'preservim/nerdcommenter'
